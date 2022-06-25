@@ -10,6 +10,12 @@ module.exports = defineConfig({
         ws: true,
         secure: false,
         changeOrigin: true,
+      },
+      '/css': {
+        target: 'http://news-at.zhihu.com',
+        ws: true,
+        secure: false,
+        changeOrigin: true,
       }
     }
   }

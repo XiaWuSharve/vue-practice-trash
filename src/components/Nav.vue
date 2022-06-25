@@ -33,38 +33,36 @@
 </template>
 
 <script lang="ts">
-import { Story } from './interfaces/story';
-import axios from 'axios';
 import Vue from 'vue';
+import { ListItemDto, ListItem } from '@/interfaces/story';
+import { useContentStore } from '@/store';
+import request from '@/api/index';
 
 export default Vue.extend({
     name: 'NavVue',
     data() {
         return {
-            stories: [] as Story[],
-            topStories: [] as Story[],
+            stories: [] as ListItem[],
+            topStories: [] as ListItem[],
         }
     },
     mounted() {
         this.getThemes();
     },
     methods: {
-        getThemes() {
-            axios.get('/api/4/news/latest')
-                .then(res => {
-                    let data = res.data;
-                    this.stories = data.stories;
-                    for (var i = 0; i < data.stories.length; i++) {
-                        this.stories[i].image = data.stories[i].images[0];
-                    }
-                    this.topStories = data.top_stories;
-                })
-                .catch(error => {
-                    console.log(`发生错误，${error}`);
-                });
+        async getThemes() {
+            const {stories, top_stories} = await request.getLatest() as ListItemDto;
+            console.log(top_stories);
+            for(const {images, ...rest} of stories) {
+                this.stories.push({image: images[0], ...rest});
+            }
+            for(const {image, ...rest} of top_stories) {
+                this.topStories.push({image: image, ...rest});
+            }
         },
-        onGetContent (id: number) {
-            this.$emit('get-content', id);
+        onGetContent(id: number) {
+            let store = useContentStore();
+            store.id = id;
         }
     }
 });

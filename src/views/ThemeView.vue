@@ -2,10 +2,10 @@
     <v-container fluid>
         <v-row>
             <v-col cols="4">
-                <nav-vue @get-content="id = $event"></nav-vue>
+                <nav-vue></nav-vue>
             </v-col>
             <v-col>
-                <content-vue :page_id="id"></content-vue>
+                <content-vue></content-vue>
             </v-col>
         </v-row>
     </v-container>
@@ -13,8 +13,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import NavVue from '@/components/theme/Nav.vue';
-import ContentVue from '@/components/theme/Content.vue';
+import NavVue from '@/components/Nav.vue';
+import ContentVue from '@/components/Content.vue';
 
 export default Vue.extend({
     components: {
